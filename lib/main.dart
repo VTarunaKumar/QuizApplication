@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/Questions.dart';
+import 'package:quiz_app/QuizBrain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp(
@@ -24,27 +28,27 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<String> question = [
-    'the five rings on the Olympic flag are interlocking?',
-    'Strictly Come Dancing first aired in the UK in 2005',
-    ' a group of swans is known as a bevy?',
-    'Sydney is the capital of Australia?',
-    'the Penny Black is an old-fashioned coin?'
-  ];
-
-  List<bool> answers = [true, false, true, false, false];
-
+  // List<String> question = [
+  //   'the five rings on the Olympic flag are interlocking?',
+  //   'Strictly Come Dancing first aired in the UK in 2005',
+  //   ' a group of swans is known as a bevy?',
+  //   'Sydney is the capital of Australia?',
+  //   'the Penny Black is an old-fashioned coin?'
+  // ];
+  //
+  // List<bool> answers = [true, false, true, false, false];
+  // Questions q1 = Questions(q:'the five rings on the Olympic flag are interlocking?',a:true );
   int questionNumber = 0;
 
   List<Icon> scoreKeeper = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
+    // Icon(
+    //   Icons.check,
+    //   color: Colors.green,
+    // ),
+    // Icon(
+    //   Icons.close,
+    //   color: Colors.red,
+    // ),
   ];
 
   @override
@@ -59,7 +63,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10),
             child: Center(
               child: Text(
-                question[questionNumber],
+                quizBrain.questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25,
@@ -81,25 +85,32 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  bool correectAnswer = answers[questionNumber];
+                  bool correectAnswer =
+                      quizBrain.questionBank[questionNumber].questionAnswer;
                   if (correectAnswer == true) {
-                    print("Right");
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.check,
-                        color: Colors.green,
-                      ),
-                    );
+                    if (scoreKeeper.length > 5) {
+                      print("Right");
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                      );
+                    }
                   } else {
-                    print("Wrong");
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    );
+                    if (scoreKeeper.length < 5) {
+                      print("Wrong");
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      );
+                    }
                   }
-                  questionNumber++;
+                  if (questionNumber < 5) {
+                    questionNumber++;
+                  }
                 });
               },
             ),
@@ -116,26 +127,32 @@ class _QuizPageState extends State<QuizPage> {
             ),
             onPressed: () {
               setState(() {
-                bool correectAnswer = false;
+                bool correectAnswer =
+                    quizBrain.questionBank[questionNumber].questionAnswer;
                 if (correectAnswer == false) {
-                  print("Right");
-                  scoreKeeper.add(
-                    Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ),
-                  );
+                  if (scoreKeeper.length > 5) {
+                    print("Right");
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.check,
+                        color: Colors.green,
+                      ),
+                    );
+                  }
                 } else {
-                  print("Wrong");
-                  scoreKeeper.add(
-                    Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                  );
+                  if (scoreKeeper.length > 5) {
+                    print("Wrong");
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.close,
+                        color: Colors.red,
+                      ),
+                    );
+                  }
                 }
-
-                questionNumber++;
+                if (questionNumber < 5) {
+                  questionNumber++;
+                }
               });
             },
           ),
